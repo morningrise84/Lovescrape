@@ -6,7 +6,7 @@ import csv
 # PREPARE .CSV TO STORE PROFILE DETAILS #
 exportcsv = open('Profiles.csv', 'w', newline='', encoding='utf-8')
 csvwriter = csv.writer(exportcsv)
-csvwriter.writerow(['ID', 'Nickname', 'Age', 'City', 'Last Login', 'Intro', 'Readiness', 'Status', 'Has Kids', 'Wants Kids', 'Height', 'Figure', 'Zodiac Sign', 'Smoker', 'Marriage', 'Languages', 'Profile Link'])
+csvwriter.writerow(['ID', 'Nickname', 'Age', 'City', 'Last Login', 'Intro', 'Readiness', 'Status', 'Has Kids', 'Wants Kids', 'Height', 'Figure', 'Zodiac Sign', 'Smoker', 'Marriage', 'Languages', 'Desired Minimum Age', 'Desired Maximum Age', 'Desired Minimum Height', 'Desired Maximum Height','Does he want kids','Profile Link'])
 
 # LOAD PROFILE LINKS ON A PREVIOUSLY OPENED BROWSER WINDOW #
 options = Options()
@@ -27,13 +27,26 @@ def csv_url_reader(url_obj):
         link = driver.current_url
         ID = link.split('/')[5]
         ID = ID.split('?')[0]
-        nickname = driver.find_element_by_class_name("profile-infos__nickname").text
-        agecity = driver.find_element_by_class_name("profile-infos__age-city").text
-        age = agecity.split(',')[0]
-        age = age.replace(' Jahre alt', '')
-        city = agecity.split(',')[1]
-        city = city.replace(' ', '')
-        lastlogin = driver.find_element_by_class_name("last-connection-date").text
+
+        try:
+            nickname = driver.find_element_by_class_name("profile-infos__nickname").text
+        except Exception as e:
+            nickname = 'N/A'
+
+        try:
+            agecity = driver.find_element_by_class_name("profile-infos__age-city").text
+            age = agecity.split(',')[0]
+            age = age.replace(' Jahre alt', '')
+            city = agecity.split(',')[1]
+            city = city.replace(' ', '')
+        except Exception as e:
+            age = 'N/A'
+            city = 'N/A'
+
+        try:
+            lastlogin = driver.find_element_by_class_name("last-connection-date").text
+        except Exception as e:
+            lastlogin = 'N/A'
 
         try:
             intro = driver.find_element_by_class_name("profile-essay__text ").text
@@ -102,6 +115,40 @@ def csv_url_reader(url_obj):
         except Exception as e:
             languagesA = 'N/A'
 
+        try:
+            desiredpartner = driver.find_element_by_link_text('Ich suche')
+            desiredpartner.click()
+        except Exception as e:
+            pass
+
+        try:
+            desiredageQ = driver.find_element_by_xpath("//*[contains(text(), 'Sein Alter')]")
+            desiredageA = desiredageQ.find_element_by_xpath("following-sibling::div").get_attribute('innerHTML')
+            minimumage = desiredageA.split(' bis ')[0]
+            minimumage = minimumage.replace('von ', '')
+            maximumage = desiredageA.split(' bis ')[1]
+            maximumage = maximumage.replace(' Jahre', '')
+        except Exception as e:
+            minimumage = 'N/A'
+            maximumage = 'N/A'
+
+        try:
+            desiredheightQ = driver.find_element_by_xpath("//*[contains(text(), 'Seine Größe')]")
+            desiredheightA = desiredheightQ.find_element_by_xpath("following-sibling::div").get_attribute('innerHTML')
+            minimumheight = desiredheightA.split(' bis ')[0]
+            minimumheight = minimumheight.replace('von ', '')
+            maximumheight = desiredheightA.split(' bis ')[1]
+            maximumheight = maximumheight.replace(' cm', '')
+        except Exception as e:
+            minimumheight = 'N/A'
+            maximumheight = 'N/A'
+
+        try:
+            desiredkidsQ = driver.find_element_by_xpath("//*[contains(text(), 'sich Kinder')]")
+            desiredkidsA = desiredkidsQ.find_element_by_xpath("following-sibling::div").get_attribute('innerHTML')
+        except Exception as e:
+            desiredkidsA = 'N/A'
+
         print(ID)
         print(nickname)
         print(age)
@@ -118,10 +165,15 @@ def csv_url_reader(url_obj):
         print(smokerA)
         print(marriageA)
         print(languagesA)
+        print(minimumage)
+        print(maximumage)
+        print(minimumheight)
+        print(maximumheight)
+        print(desiredkidsA)
         print(link)
 
         # EXPORT PROFILE DETAILS TO .CSV #
-        csvwriter.writerow([ID, nickname, age, city, lastlogin, intro, readinessA, statusA, haskidsA, wantskidsA, heightA, figureA, zodiacsignA, smokerA, marriageA, languagesA, link])
+        csvwriter.writerow([ID, nickname, age, city, lastlogin, intro, readinessA, statusA, haskidsA, wantskidsA, heightA, figureA, zodiacsignA, smokerA, marriageA, languagesA, minimumage, maximumage, minimumheight, maximumheight, desiredkidsA, link])
 
 if __name__ == '__main__':
     with open ('Links.csv') as url_obj:
