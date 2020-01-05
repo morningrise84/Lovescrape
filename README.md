@@ -55,6 +55,3 @@ For each profile the following information will be stored (of course, if availab
 - Desired Maximum Height (of a potential partner)
 - Does the potential partner want kids
 - Link to the full profile
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
