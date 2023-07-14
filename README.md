@@ -1,15 +1,9 @@
 # Lovescrape
 A semi-automated approach to scrape user information from a popular German dating site. 
 
-In case you are wondering, yes, I do need to find a girlfriend... :-(
-
-_(If you are a pretty, smart, loyal, non-smoker girl living in Berlin drop me an [email](mailto:manfredi.bruckner@gmail.com)!)_
-
-
 ## Status
 Currently (December 2019) this solution works like a charm. Should the site change, the scripts might need to be updated accordingly.
-
-As long as I am single, I will keep maintaining the code for personal reasons but in the long run I am not planning to do so. Feel free step in as a maintainer.
+I will not maintain the code in the future: feel free step in as a maintainer.
 
 ## Prerequisites
 These scripts take advantage of the Chrome DevTools Protocol to connect Selenium/Chromedriver to an already opened Chrome window (special thanks to S. Ansari for the insights).
