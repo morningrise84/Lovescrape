@@ -1,5 +1,5 @@
 # Lovescrape
-A semi-automated approach to scrape user information from a popular German dating site. 
+A semi-automated approach to scrape user information from a popular German dating site. Use at your own risk.
 
 ## Status
 Currently (December 2019) this solution works like a charm. Should the site change, the scripts might need to be updated accordingly.
